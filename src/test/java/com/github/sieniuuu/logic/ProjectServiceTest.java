@@ -1,20 +1,21 @@
 package com.github.sieniuuu.logic;
 
 import com.github.sieniuuu.TaskConfigurationProperties;
+import com.github.sieniuuu.model.Project;
 import com.github.sieniuuu.model.ProjectRepository;
 import com.github.sieniuuu.model.TaskGroup;
 import com.github.sieniuuu.model.TaskGroupRepository;
+import com.github.sieniuuu.model.projection.GroupReadModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -102,53 +103,79 @@ class ProjectServiceTest {
     @DisplayName("should creat a new group form project")
     void createGroup_configurationOk_existingProject_createsAndSavesGroup() {
         //given
+        var today = LocalDate.now().atStartOfDay();
+        //and
         var mockRepository = mock(ProjectRepository.class);
         when(mockRepository.findById(anyInt())).thenReturn(Optional.empty());
         //and
-        TaskGroupRepository inMemoryGroupRepo = inMemoryGreopuRepository();
+        InMemoryGroupRepository inMemoryGroupRepo = inMemoryGroupRepository();
+        int countBeforeCall = inMemoryGroupRepo.count();
         //and
         TaskConfigurationProperties mockConfig = configurationReturning(true);
 
+        //system under test
+        var toTest = new ProjectService(mockRepository, inMemoryGroupRepo, mockConfig);
 
+        //whent
+        GroupReadModel result = toTest.createGroup(today, 1);
+
+        //then
+
+//        assertThat(result)
+
+        assertThat(countBeforeCall + 1)
+                .isNotEqualTo(inMemoryGroupRepo.count());
     }
 
-    private TaskGroupRepository inMemoryGreopuRepository() {
-        return new TaskGroupRepository() {
-            private int index = 0;
-            private Map<Integer, TaskGroup> map = new HashMap<>();
+    private Project projectWith(String description) {
+        var result = mock(Project.class);
+        when(result.getDescription()).thenReturn(description);
+        
+    }
 
-            @Override
-            public List<TaskGroup> findAll() {
-                return new ArrayList<>(map.values());
-            }
+    private InMemoryGroupRepository inMemoryGroupRepository() {
+        return new InMemoryGroupRepository();
+    }
 
-            @Override
-            public Optional<TaskGroup> findById(Integer id) {
-                return Optional.ofNullable(map.get(id));
-            }
+    private static class InMemoryGroupRepository implements TaskGroupRepository {
 
-            @Override
-            public TaskGroup save(TaskGroup entity) {
-                if (entity.getId() == 0) {
-                    try {
-                        TaskGroup.class.getDeclaredField("id").set(entity, ++index);
-                    } catch (NoSuchFieldException | IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    }
+        private int index = 0;
+        private Map<Integer, TaskGroup> map = new HashMap<>();
+
+        public int count() {
+            return map.values().size();
+        }
+
+        @Override
+        public List<TaskGroup> findAll() {
+            return new ArrayList<>(map.values());
+        }
+
+        @Override
+        public Optional<TaskGroup> findById(Integer id) {
+            return Optional.ofNullable(map.get(id));
+        }
+
+        @Override
+        public TaskGroup save(TaskGroup entity) {
+            if (entity.getId() == 0) {
+                try {
+                    TaskGroup.class.getDeclaredField("id").set(entity, ++index);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    throw new RuntimeException(e);
                 }
-                map.put(entity.getId(), entity);
-                return null;
             }
+            map.put(entity.getId(), entity);
+            return null;
+        }
 
-            @Override
-            public boolean existsByDoneIsFalseAndProject_Id(Integer projectId) {
-                return map.values().stream()
-                        .filter(group -> !group.isDone())
-                        .anyMatch(group -> group.getProject() != null && group.getProject().getId() == projectId);
-            }
-        };
-    }
-
+        @Override
+        public boolean existsByDoneIsFalseAndProject_Id(Integer projectId) {
+            return map.values().stream()
+                    .filter(group -> !group.isDone())
+                    .anyMatch(group -> group.getProject() != null && group.getProject().getId() == projectId);
+        }
+    };
 
 
     private TaskGroupRepository groupRepositoryReturning(boolean result) {
