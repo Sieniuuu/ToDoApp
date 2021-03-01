@@ -6,7 +6,6 @@ import com.github.sieniuuu.model.TaskGroup;
 import java.time.LocalDateTime;
 
 public class GroupTaskWriteModel {
-
     private String description;
     private LocalDateTime deadline;
 
@@ -26,7 +25,7 @@ public class GroupTaskWriteModel {
         this.deadline = deadline;
     }
 
-    Task toTask(TaskGroup group) {
+    Task toTask(final TaskGroup group) {
         return new Task(description, deadline, group);
     }
 }

@@ -1,7 +1,4 @@
 package com.github.sieniuuu.model;
-
-import com.github.sieniuuu.model.TaskGroup;
-
 import java.util.List;
 import java.util.Optional;
 

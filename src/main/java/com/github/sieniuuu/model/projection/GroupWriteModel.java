@@ -1,4 +1,5 @@
 package com.github.sieniuuu.model.projection;
+
 import com.github.sieniuuu.model.TaskGroup;
 
 import java.util.Set;

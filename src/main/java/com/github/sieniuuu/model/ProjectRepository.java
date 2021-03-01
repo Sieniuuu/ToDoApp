@@ -1,6 +1,5 @@
 package com.github.sieniuuu.model;
 
-
 import java.util.List;
 import java.util.Optional;
 

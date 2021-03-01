@@ -1,16 +1,13 @@
 package com.github.sieniuuu.logic;
 
-
 import com.github.sieniuuu.model.TaskGroup;
 import com.github.sieniuuu.model.TaskGroupRepository;
 import com.github.sieniuuu.model.TaskRepository;
 import com.github.sieniuuu.model.projection.GroupReadModel;
 import com.github.sieniuuu.model.projection.GroupWriteModel;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 public class TaskGroupService {
     private TaskGroupRepository repository;

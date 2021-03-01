@@ -1,6 +1,5 @@
 package com.github.sieniuuu.model;
 
-import com.github.sieniuuu.model.Audit;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -14,10 +13,9 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tasks")
 public class Task {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NotBlank(message = "Task's description must not be empty")
     private String description;
@@ -26,10 +24,9 @@ public class Task {
     @Embedded
     private Audit audit = new Audit();
     @ManyToOne
-    @JoinColumn(name = "task_group_id")
     private TaskGroup group;
 
-    Task() {
+    public Task() {
     }
 
     public Task(String description, LocalDateTime deadline) {
@@ -39,7 +36,7 @@ public class Task {
     public Task(String description, LocalDateTime deadline, TaskGroup group) {
         this.description = description;
         this.deadline = deadline;
-        if(group != null) {
+        if (group != null) {
             this.group = group;
         }
     }

@@ -1,5 +1,6 @@
 package com.github.sieniuuu.logic;
 
+
 import com.github.sieniuuu.TaskConfigurationProperties;
 import com.github.sieniuuu.model.ProjectRepository;
 import com.github.sieniuuu.model.TaskGroupRepository;
@@ -8,20 +9,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class LogicConfiguration {
-
+class LogicConfiguration {
     @Bean
-    ProjectService projectService(ProjectRepository repository,
-                                  TaskGroupRepository taskGroupRepository,
-                                  TaskGroupService taskGroupService,
-                                  TaskConfigurationProperties config) {
-        return new ProjectService(repository, taskGroupRepository, config, taskGroupService);
+    ProjectService projectService(
+            final ProjectRepository repository,
+            final TaskGroupRepository taskGroupRepository,
+            final TaskConfigurationProperties config
+    ) {
+        return new ProjectService(repository, taskGroupRepository, config, null);
     }
 
     @Bean
-    TaskGroupService taskGroupService(TaskGroupRepository taskGroupRepository,
-                                      TaskRepository taskRepository) {
+    TaskGroupService taskGroupService(
+            final TaskGroupRepository taskGroupRepository,
+            final TaskRepository taskRepository
+    ) {
         return new TaskGroupService(taskGroupRepository, taskRepository);
     }
-
 }
