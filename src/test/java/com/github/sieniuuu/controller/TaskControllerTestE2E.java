@@ -16,8 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class TaskControllerTestE2E {
-
+class TaskControllerE2ETest {
     @LocalServerPort
     private int port;
 
@@ -25,21 +24,19 @@ class TaskControllerTestE2E {
     private TestRestTemplate restTemplate;
 
     @Autowired
-    TaskRepository taskRepository;
+    TaskRepository repo;
 
     @Test
     void httpGet_returnsAllTasks() {
-        //give
-        int initial = taskRepository.findAll().size();
-        taskRepository.save(new Task("foo", LocalDateTime.now()));
-        taskRepository.save(new Task("bar", LocalDateTime.now()));
+        // given
+        int initial = repo.findAll().size();
+        repo.save(new Task("foo", LocalDateTime.now()));
+        repo.save(new Task("bar", LocalDateTime.now()));
 
-        //when
+        // when
         Task[] result = restTemplate.getForObject("http://localhost:" + port + "/tasks", Task[].class);
 
-        //then
+        // then
         assertThat(result).hasSize(initial + 2);
-
     }
-
 }

@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-
+@Table(name = "project_steps")
 public class ProjectStep {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +19,7 @@ public class ProjectStep {
     private String description;
     private int daysToDeadline;
     @ManyToOne
+    @JoinColumn(name = "project_id")
     private Project project;
 
     public int getId() {
@@ -33,7 +34,7 @@ public class ProjectStep {
         return description;
     }
 
-    void setDescription(final String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -49,7 +50,7 @@ public class ProjectStep {
         return project;
     }
 
-    void setProject(final Project project) {
+    public void setProject(final Project project) {
         this.project = project;
     }
 }

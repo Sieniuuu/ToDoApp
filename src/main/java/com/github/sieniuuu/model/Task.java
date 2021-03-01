@@ -13,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "tasks")
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +25,7 @@ public class Task {
     @Embedded
     private Audit audit = new Audit();
     @ManyToOne
+    @JoinColumn(name = "task_group_id")
     private TaskGroup group;
 
     public Task() {

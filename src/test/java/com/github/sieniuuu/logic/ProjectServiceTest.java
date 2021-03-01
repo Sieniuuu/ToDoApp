@@ -29,7 +29,7 @@ class ProjectServiceTest {
         // and
         TaskConfigurationProperties mockConfig = configurationReturning(false);
         // system under test
-        var toTest = new ProjectService(null, mockGroupRepository, mockConfig, null);
+        var toTest = new ProjectService(null, mockGroupRepository, mockConfig, taskGroupService);
 
         // when
         var exception = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 0));
@@ -49,7 +49,7 @@ class ProjectServiceTest {
         // and
         TaskConfigurationProperties mockConfig = configurationReturning(true);
         // system under test
-        var toTest = new ProjectService(mockRepository, null, mockConfig, null);
+        var toTest = new ProjectService(mockRepository, null, mockConfig, taskGroupService);
 
         // when
         var exception = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 0));
@@ -71,7 +71,7 @@ class ProjectServiceTest {
         // and
         TaskConfigurationProperties mockConfig = configurationReturning(true);
         // system under test
-        var toTest = new ProjectService(mockRepository, mockGroupRepository, mockConfig, null);
+        var toTest = new ProjectService(mockRepository, mockGroupRepository, mockConfig, taskGroupService);
 
         // when
         var exception = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 0));
@@ -94,12 +94,11 @@ class ProjectServiceTest {
                 .thenReturn(Optional.of(project));
         // and
         InMemoryGroupRepository inMemoryGroupRepo = inMemoryGroupRepository();
-        var serviceWithInMemRepo = new TaskGroupService(inMemoryGroupRepo, null);
         int countBeforeCall = inMemoryGroupRepo.count();
         // and
         TaskConfigurationProperties mockConfig = configurationReturning(true);
         // system under test
-        var toTest = new ProjectService(mockRepository, inMemoryGroupRepo, mockConfig, serviceWithInMemRepo);
+        var toTest = new ProjectService(mockRepository, inMemoryGroupRepo, mockConfig, taskGroupService);
 
         // when
         GroupReadModel result = toTest.createGroup(today, 1);

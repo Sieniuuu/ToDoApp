@@ -25,4 +25,8 @@ public class TaskService {
         logger.info("Supply async");
         return CompletableFuture.supplyAsync(taskRepository::findAll);
     }
+
+    public boolean isTaskExist (Integer id) {
+        return taskRepository.findById(id).isPresent();
+    }
 }

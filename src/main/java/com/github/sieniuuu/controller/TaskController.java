@@ -1,6 +1,7 @@
 package com.github.sieniuuu.controller;
 
 
+import com.github.sieniuuu.logic.TaskService;
 import com.github.sieniuuu.model.Task;
 import com.github.sieniuuu.model.TaskRepository;
 import org.slf4j.Logger;
@@ -27,9 +28,11 @@ import java.util.List;
 class TaskController {
     private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
     private final TaskRepository repository;
+    private final TaskService taskService;
 
-    TaskController(final TaskRepository repository) {
+    TaskController(final TaskRepository repository, TaskService taskService) {
         this.repository = repository;
+        this.taskService = taskService;
     }
 
     @PostMapping
@@ -65,8 +68,8 @@ class TaskController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate) {
-        if (!repository.existsById(id)) {
+    ResponseEntity<?> updateTask(@PathVariable Integer id, @RequestBody @Valid Task toUpdate) {
+        if (!taskService.isTaskExist(id)) {
             return ResponseEntity.notFound().build();
         }
         repository.findById(id)
@@ -79,8 +82,8 @@ class TaskController {
 
     @Transactional
     @PatchMapping("/{id}")
-    public ResponseEntity<?> toggleTask(@PathVariable int id) {
-        if (!repository.existsById(id)) {
+    public ResponseEntity<?> toggleTask(@PathVariable Integer id) {
+        if (!taskService.isTaskExist(id)) {
             return ResponseEntity.notFound().build();
         }
         repository.findById(id)

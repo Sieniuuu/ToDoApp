@@ -18,24 +18,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("integration")
-public class TestControllerIntegrationTest {
-
+class TaskControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private TaskRepository taskRepository;
+    private TaskRepository repo;
 
     @Test
     void httpGet_returnsGivenTask() throws Exception {
-        //given
+        // given
+        int id = repo.save(new Task("foo", LocalDateTime.now())).getId();
 
-        int id = taskRepository.save(new Task("foo", LocalDateTime.now())).getId();
-
-        //when + then
+        // when + then
         mockMvc.perform(get("/tasks/" + id))
                 .andExpect(status().is2xxSuccessful());
-
     }
-
 }

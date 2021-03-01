@@ -26,23 +26,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest(TaskController.class)
-public class TestControllerLightIntegrationTest {
-
+class TaskControllerLightIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private TaskRepository taskRepository;
+    private TaskRepository repo;
 
     @Test
     void httpGet_returnsGivenTask() throws Exception {
-        //given
+        // given
         String description = "foo";
-        when(taskRepository.findById(anyInt()))
+        when(repo.findById(anyInt()))
                 .thenReturn(Optional.of(new Task(description, LocalDateTime.now())));
 
-
-        //when + then
+        // when + then
         mockMvc.perform(get("/tasks/123"))
                 .andDo(print())
                 .andExpect(content().string(containsString(description)));

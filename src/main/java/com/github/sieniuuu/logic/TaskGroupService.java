@@ -1,5 +1,6 @@
 package com.github.sieniuuu.logic;
 
+import com.github.sieniuuu.model.Project;
 import com.github.sieniuuu.model.TaskGroup;
 import com.github.sieniuuu.model.TaskGroupRepository;
 import com.github.sieniuuu.model.TaskRepository;
@@ -19,7 +20,11 @@ public class TaskGroupService {
     }
 
     public GroupReadModel createGroup(final GroupWriteModel source) {
-        TaskGroup result = repository.save(source.toGroup());
+        return createGroup(source, null);
+    }
+
+    GroupReadModel createGroup (GroupWriteModel source, Project project) {
+        TaskGroup result = repository.save(source.toGroup(project));
         return new GroupReadModel(result);
     }
 
@@ -38,4 +43,5 @@ public class TaskGroupService {
         result.setDone(!result.isDone());
         repository.save(result);
     }
+
 }
