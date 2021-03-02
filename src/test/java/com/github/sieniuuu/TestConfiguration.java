@@ -1,5 +1,6 @@
 package com.github.sieniuuu;
 
+
 import com.github.sieniuuu.model.Task;
 import com.github.sieniuuu.model.TaskRepository;
 import org.springframework.context.annotation.Bean;
@@ -11,17 +12,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Configuration
 class TestConfiguration {
-
     @Bean
     @Primary
     @Profile("!integration")
     DataSource e2eTestDataSource() {
-        var result = new DriverManagerDataSource("jdbc:mysql://localhost:3306/ToDo?serverTimezone=UTC&useSSL=false", "root", "coderslab");
-        result.setDriverClassName("com.mysql.jdbc.Driver");
+        var result = new DriverManagerDataSource("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "sa", "");
+        result.setDriverClassName("org.h2.Driver");
         return result;
     }
 
@@ -49,7 +53,7 @@ class TestConfiguration {
 
             @Override
             public boolean existsById(final int id) {
-                return !tasks.containsKey(id);
+                return tasks.containsKey(id);
             }
 
             @Override
@@ -77,7 +81,7 @@ class TestConfiguration {
             }
 
             @Override
-            public List<Task> findAllByGroup_Id(Integer id) {
+            public List<Task> findAllByGroup_Id(final Integer groupId) {
                 return List.of();
             }
         };

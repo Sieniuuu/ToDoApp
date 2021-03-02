@@ -1,6 +1,4 @@
 package com.github.sieniuuu.adapter;
-
-
 import com.github.sieniuuu.model.Task;
 import com.github.sieniuuu.model.TaskRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,7 +12,8 @@ import java.util.List;
 interface SqlTaskRepository extends TaskRepository, JpaRepository<Task, Integer> {
 
     @Override
-    boolean existsById(Integer id);
+    @Query(nativeQuery = true, value = "select count(*) > 0 from ToDo.tasks where tasks.id=:id")
+    boolean existsById(@Param("id") Integer id);
 
     @Override
     boolean existsByDoneIsFalseAndGroup_Id(Integer groupId);

@@ -1,6 +1,5 @@
 package com.github.sieniuuu.logic;
 
-
 import com.github.sieniuuu.TaskConfigurationProperties;
 import com.github.sieniuuu.model.ProjectRepository;
 import com.github.sieniuuu.model.TaskGroupRepository;
@@ -14,9 +13,10 @@ class LogicConfiguration {
     ProjectService projectService(
             final ProjectRepository repository,
             final TaskGroupRepository taskGroupRepository,
+            final TaskGroupService taskGroupService,
             final TaskConfigurationProperties config
     ) {
-        return new ProjectService(repository, taskGroupRepository, config, taskGroupService);
+        return new ProjectService(repository, taskGroupRepository, taskGroupService, config);
     }
 
     @Bean

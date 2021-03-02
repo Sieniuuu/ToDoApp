@@ -1,6 +1,4 @@
 package com.github.sieniuuu.controller;
-
-
 import com.github.sieniuuu.TaskConfigurationProperties;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,5 +1,4 @@
 package com.github.sieniuuu.adapter;
-
 import com.github.sieniuuu.model.Project;
 import com.github.sieniuuu.model.ProjectRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
