@@ -1,9 +1,10 @@
 # About:
 ToDoApp is application that allows you to schedule tasks and groups of tasks.
-(*It is training project from Udemy Mateusz Chrzonstowski)
+
 
 Main features:
 Creating projects, tasks, and task groups connected by deadline and by done
+(*It is training project from Udemy Mateusz Chrzonstowski)
 
 # Technologies:
 
