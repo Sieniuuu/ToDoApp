@@ -23,3 +23,8 @@ management:
    base-path: "/status"
    exposure:
     include: '*'
+keycloak:
+ auth-server-url: "http://localhost:8180/auth"
+ realm: "ToDoApp"
+ resource: "todo-spring-client"
+ public-client: true

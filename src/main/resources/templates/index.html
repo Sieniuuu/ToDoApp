@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,14 +12,14 @@
     <p>Doing all the things!</p>
     <nav>
         <ul>
-            <li>
+            <li sec:authorize="hasRole('ADMIN')" >
                 <a href="/projects">Projekty</a>
             </li>
             <li>
                 <a href="/groups">Grupy zadań</a>
             </li>
             <li>
-                <a href="/tasks.html">Zadania</a>
+                <a href="/static/tasks.html">Zadania</a>
             </li>
         </ul>
     </nav>

@@ -3,6 +3,7 @@ import com.github.sieniuuu.model.Task;
 import com.github.sieniuuu.model.TaskRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,9 +26,11 @@ import java.util.List;
 class TaskController {
     private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
     private final TaskRepository repository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
-    TaskController(final TaskRepository repository) {
+    TaskController(final TaskRepository repository, ApplicationEventPublisher applicationEventPublisher) {
         this.repository = repository;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @PostMapping
@@ -82,7 +85,8 @@ class TaskController {
             return ResponseEntity.notFound().build();
         }
         repository.findById(id)
-                .ifPresent(task -> task.setDone(!task.isDone()));
+                .map(Task::toggle)
+                .ifPresent(applicationEventPublisher::publishEvent);
         return ResponseEntity.noContent().build();
     }
 }
